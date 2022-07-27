@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "createcomputing:block/computerized_display_source"
+    },
+    "facing=east": {
+      "model": "createcomputing:block/computerized_display_source", "y": 90
+    },
+    "facing=south": {
+      "model": "createcomputing:block/computerized_display_source", "y": 180
+    },
+    "facing=west": {
+      "model": "createcomputing:block/computerized_display_source", "y": 270
+    }
+  }
+}

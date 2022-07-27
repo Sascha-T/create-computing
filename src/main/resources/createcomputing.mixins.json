@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.saschat.createcomputing.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "createcomputing.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
