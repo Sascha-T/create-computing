@@ -1,9 +1,14 @@
 package de.saschat.createcomputing;
 
+import com.simibubi.create.content.logistics.trains.management.edgePoint.TrackTargetingBlockItem;
+import com.simibubi.create.repack.registrate.util.nullness.NonNullBiFunction;
 import de.saschat.createcomputing.blocks.ComputerizedDisplaySourceBlock;
 import de.saschat.createcomputing.blocks.ComputerizedDisplayTargetBlock;
+import de.saschat.createcomputing.blocks.TrainNetworkObserverBlock;
 import de.saschat.createcomputing.tiles.ComputerizedDisplaySourceTile;
 import de.saschat.createcomputing.tiles.ComputerizedDisplayTargetTile;
+import de.saschat.createcomputing.tiles.TrainNetworkObserverTile;
+import de.saschat.createcomputing.tiles.renderer.TrainNetworkObserverRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.BlockItem;
@@ -13,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -36,11 +42,15 @@ public class Registries {
         return BLOCK_REGISTRY.register(name, blockSupplier);
     }
 
-    public static RegistryObject<Item> registerBlockItem(String name, RegistryObject<Block> block, Item.Properties properties) {
+    public static RegistryObject<Item> registerBlockItem(String name, RegistryObject<Block> block, Item.Properties properties, NonNullBiFunction<? super Block, Item.Properties, ? extends BlockItem> function) {
         CreateComputingMod.LOGGER.info("Queuing block item: " + name);
         return ITEM_REGISTRY.register(name, () -> {
-            return new BlockItem(block.get(), properties);
+            return function.apply(block.get(), properties);
         });
+    }
+
+    public static RegistryObject<Item> registerBlockItem(String name, RegistryObject<Block> block, Item.Properties properties) {
+        return registerBlockItem(name, block, properties, BlockItem::new);
     }
 
     public static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> registerTile(String name, BlockEntityType.BlockEntitySupplier<? extends T> supplier, Supplier<Block>... blocks) {
@@ -93,6 +103,23 @@ public class Registries {
         COMPUTERIZED_DISPLAY_TARGET
     );
 
+    // Train Network Observer
+    public static RegistryObject<Block> TRAIN_NETWORK_OBSERVER = registerBlock(
+        "train_network_observer",
+        TrainNetworkObserverBlock::new
+    );
+    public static RegistryObject<Item> TRAIN_NETWORK_OBSERVER_ITEM = registerBlockItem(
+        "train_network_observer",
+        TRAIN_NETWORK_OBSERVER,
+        new Item.Properties().tab(TAB),
+        TrackTargetingBlockItem.ofType(TrainNetworkObserverTile.NETWORK_OBSERVER)
+    );
+    public static RegistryObject<BlockEntityType<TrainNetworkObserverTile>> TRAIN_NETWORK_OBSERVER_TILE = registerTile(
+        "train_network_observer",
+        TrainNetworkObserverTile::new,
+        TRAIN_NETWORK_OBSERVER
+    );
+
     // Events
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -106,6 +133,10 @@ public class Registries {
         @SubscribeEvent
         public static void fmlClient(final FMLClientSetupEvent blockRegistryEvent) {
             ItemBlockRenderTypes.setRenderLayer(COMPUTERIZED_DISPLAY_TARGET.get(), RenderType.cutout());
+        }
+        @SubscribeEvent
+        public static void modRenderer(final EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(TRAIN_NETWORK_OBSERVER_TILE.get(), TrainNetworkObserverRenderer::new);
         }
         public static void modData(final GatherDataEvent event) {}
     }

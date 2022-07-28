@@ -2,5 +2,6 @@
   "itemGroup.createcomputing.tab": "Create: Computing",
   "createcomputing.display_source.computerized_display_source": "Computer Text",
   "block.createcomputing.computerized_display_source": "Computerized Display Source",
-  "block.createcomputing.computerized_display_target": "Computerized Display Target"
+  "block.createcomputing.computerized_display_target": "Computerized Display Target",
+  "block.createcomputing.train_network_observer": "Train Network Observer"
 }
