@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'de.saschat'
-version = '1.0.0pre'
+version = '1.0.0-pre1'
 
 java {
     archivesBaseName = 'createcomputing'

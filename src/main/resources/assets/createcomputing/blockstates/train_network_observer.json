@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "createcomputing:block/train_network_observer"
+    }
+  }
+}
