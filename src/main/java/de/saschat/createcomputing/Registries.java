@@ -1,16 +1,23 @@
 package de.saschat.createcomputing;
 
+import com.simibubi.create.Create;
+import com.simibubi.create.content.logistics.IRedstoneLinkable;
+import com.simibubi.create.content.logistics.RedstoneLinkNetworkHandler;
 import com.simibubi.create.content.logistics.trains.management.edgePoint.TrackTargetingBlockItem;
+import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.repack.registrate.util.nullness.NonNullBiFunction;
 import de.saschat.createcomputing.blocks.ComputerizedDisplaySourceBlock;
 import de.saschat.createcomputing.blocks.ComputerizedDisplayTargetBlock;
+import de.saschat.createcomputing.blocks.ComputerizedRedstoneLinkBlock;
 import de.saschat.createcomputing.blocks.TrainNetworkObserverBlock;
 import de.saschat.createcomputing.tiles.ComputerizedDisplaySourceTile;
 import de.saschat.createcomputing.tiles.ComputerizedDisplayTargetTile;
+import de.saschat.createcomputing.tiles.ComputerizedRedstoneLinkTile;
 import de.saschat.createcomputing.tiles.TrainNetworkObserverTile;
 import de.saschat.createcomputing.tiles.renderer.TrainNetworkObserverRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.commands.Commands;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -19,6 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +38,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class Registries {
@@ -103,6 +113,22 @@ public class Registries {
         COMPUTERIZED_DISPLAY_TARGET
     );
 
+    // Computerized Redstone Link
+    public static RegistryObject<Block> COMPUTERIZED_REDSTONE_LINK = registerBlock(
+        "computerized_redstone_link",
+        ComputerizedRedstoneLinkBlock::new
+    );
+    public static RegistryObject<Item> COMPUTERIZED_REDSTONE_LINK_ITEM = registerBlockItem(
+        "computerized_redstone_link",
+        COMPUTERIZED_REDSTONE_LINK,
+        new Item.Properties().tab(TAB)
+    );
+    public static RegistryObject<BlockEntityType<ComputerizedRedstoneLinkTile>> COMPUTERIZED_REDSTONE_LINK_TILE = registerTile(
+        "computerized_redstone_link",
+        ComputerizedRedstoneLinkTile::new,
+        COMPUTERIZED_REDSTONE_LINK
+    );
+
     // Train Network Observer
     public static RegistryObject<Block> TRAIN_NETWORK_OBSERVER = registerBlock(
         "train_network_observer",
@@ -125,21 +151,46 @@ public class Registries {
     public static class RegistryEvents {
         @SubscribeEvent
         public static void fmlCommon(final FMLCommonSetupEvent blockRegistryEvent) {
-            // Register a new block here
             CreateComputingMod.LOGGER.info("Registering all Create behaviours.");
             Behaviours.register();
             CreateComputingMod.LOGGER.info("Registered all Create behaviour.");
         }
+
         @SubscribeEvent
         public static void fmlClient(final FMLClientSetupEvent blockRegistryEvent) {
             ItemBlockRenderTypes.setRenderLayer(COMPUTERIZED_DISPLAY_TARGET.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(COMPUTERIZED_REDSTONE_LINK.get(), RenderType.cutout());
         }
+
         @SubscribeEvent
         public static void modRenderer(final EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(TRAIN_NETWORK_OBSERVER_TILE.get(), TrainNetworkObserverRenderer::new);
         }
-        public static void modData(final GatherDataEvent event) {}
+        public static void modData(final GatherDataEvent event) {
+        }
     }
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class ForgeEvents {
+        @SubscribeEvent
+        public static void modCommands(final RegisterCommandsEvent event) {
+            System.out.println("REGISTER COMMANDS");
+            event.getDispatcher().register(
+                Commands.literal("redstone_link").executes(context -> {
+                    Map<Couple<RedstoneLinkNetworkHandler.Frequency>, Set<IRedstoneLinkable>> coupleSetMap = Create.REDSTONE_LINK_NETWORK_HANDLER.networksIn(context.getSource().getLevel());
+                    coupleSetMap.forEach((frequencies, iRedstoneLinkables) -> {
+                        System.out.println("Frequency: " + frequencies.get(true).getStack().getItem().getRegistryName().toString() + ", " + frequencies.get(false).getStack().getItem().getRegistryName().toString());
+                        for (IRedstoneLinkable iRedstoneLinkable : iRedstoneLinkables) {
+                            System.out.println("\tAt " + iRedstoneLinkable.getLocation().toString() + ", listening: " + iRedstoneLinkable.isListening() + ", alive: " + iRedstoneLinkable.isAlive() + ", strength: " + iRedstoneLinkable.getTransmittedStrength());
+                        }
+                    });
+                    return 0;
+                })
+            );
+        }
+
+
+    }
+
 
 
     // Real loading

@@ -4,12 +4,11 @@
   "package": "de.saschat.createcomputing.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "createcomputing.refmap.json",
-  "mixins": [
-  ],
   "client": [
     "TrackTargetingClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": []
 }

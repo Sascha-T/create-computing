@@ -2,13 +2,29 @@ package de.saschat.createcomputing;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Utils {
+    public static Item getByName(ResourceLocation loc) {
+        var itemRegistryObject = ForgeRegistries.ITEMS.getEntries().stream().filter(a -> {
+            return a.getValue().getRegistryName().equals(loc);
+        }).findFirst().orElseGet(() -> null);
+        if (itemRegistryObject == null)
+            return Items.AIR;
+        return itemRegistryObject.getValue();
+    }
+
+    public interface Receiver<T> {
+        void receive(T a);
+    }
     public static VoxelShape rotate(Direction from, Direction to, VoxelShape shape) {
         VoxelShape[] buffer = new VoxelShape[]{ shape, Shapes.empty() };
 
