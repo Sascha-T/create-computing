@@ -15,6 +15,8 @@ jobs:
           distribution: 'adopt'
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+      - name: Fix Gradle Permissions
+        run: chmod +x gradlew
       - name: Execute Gradle build
         run: ./gradlew build
       - uses: actions/upload-artifact@v3
