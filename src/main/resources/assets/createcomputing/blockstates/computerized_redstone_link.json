@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "createcomputing:block/computerized_redstone_link"
+    }
+  }
+}
