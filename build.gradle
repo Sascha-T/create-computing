@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'de.saschat'
-version = '1.0.0-pre2'
+version = '1.0.0-pre3'
 
 java {
     archivesBaseName = 'createcomputing'
@@ -160,6 +160,7 @@ dependencies {
     implementation fg.deobf("curse.maven:create-328085:3872145")
     implementation fg.deobf("curse.maven:flywheel-486392:3871082")
     implementation fg.deobf("curse.maven:cc-tweaked-282001:3709268")
+    implementation fg.deobf("curse.maven:jade-324717:3865918")
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency

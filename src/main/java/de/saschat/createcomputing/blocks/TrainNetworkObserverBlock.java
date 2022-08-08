@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 public class TrainNetworkObserverBlock extends Block implements ITE<TrainNetworkObserverTile> {
     public TrainNetworkObserverBlock() {
-        super(Properties.of(Material.METAL));
+        super(Properties.of(Material.WOOD).destroyTime(1));
     }
 
     @Override

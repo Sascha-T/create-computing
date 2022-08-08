@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ComputerizedRedstoneLinkBlock extends Block implements ITE<ComputerizedRedstoneLinkTile> {
     public ComputerizedRedstoneLinkBlock() {
-        super(BlockBehaviour.Properties.of(Material.WOOD));
+        super(BlockBehaviour.Properties.of(Material.WOOD).destroyTime(1));
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ComputerizedDisplaySourceBlock extends Block implements EntityBlock
     public static DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public ComputerizedDisplaySourceBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL));
+        super(BlockBehaviour.Properties.of(Material.WOOD).destroyTime(1));
         registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
