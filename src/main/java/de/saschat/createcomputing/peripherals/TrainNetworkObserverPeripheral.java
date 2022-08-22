@@ -70,6 +70,14 @@ public class TrainNetworkObserverPeripheral extends SmartPeripheral {
             List<Train> trainList = getTrains();
             return MethodResult.of(trainList.stream().map(a -> a.id.toString()).collect(Collectors.toList()));
         });
+        addMethod("getTrainName", (iComputerAccess, iLuaContext, iArguments) -> {
+            String b = iArguments.getString(0);
+            Optional<Train> first = getTrains().stream().filter(a -> a.id.toString().equals(b)).findFirst();
+            if (first.isEmpty())
+                return MethodResult.of(null);
+            Train train = first.get();
+            return MethodResult.of(new Gson().fromJson(Component.Serializer.toJson(train.name), Map.class));
+        });
         addMethod("getTrainSchedule", (iComputerAccess, iLuaContext, iArguments) -> {
             String b = iArguments.getString(0);
             Optional<Train> first = getTrains().stream().filter(a -> a.id.toString().equals(b)).findFirst();
@@ -150,6 +158,14 @@ public class TrainNetworkObserverPeripheral extends SmartPeripheral {
             Collection<GlobalStation> stations = getStations();
             return MethodResult.of(stations.stream().map(a -> a.id.toString()).collect(Collectors.toList()));
         }));
+        addMethod("getStopName", (iComputerAccess, iLuaContext, iArguments) -> {
+            String b = iArguments.getString(0);
+            Optional<GlobalStation> first = getStations().stream().filter(a -> a.id.toString().equals(b)).findFirst();
+            if (first.isEmpty())
+                return MethodResult.of(null);
+            GlobalStation station = first.get();
+            return MethodResult.of(station.name);
+        });
         addMethod("getStopWorldPosition", (iComputerAccess, iLuaContext, iArguments) -> {
             String b = iArguments.getString(0);
             Optional<GlobalStation> first = getStations().stream().filter(a -> a.id.toString().equals(b)).findFirst();
