@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -126,7 +127,7 @@ public class ComputerizedRedstoneLinkTile extends SmartTileEntity {
 
     public static boolean checkItem(Item stack) {
         for (String loc : CreateComputingConfigServer.get().BANNED_LINK_ITEMS.get()) {
-            if (loc.equals(stack.getRegistryName().toString()))
+            if (loc.equals(ForgeRegistries.ITEMS.getKey(stack).toString()))
                 return false;
         }
         return true;

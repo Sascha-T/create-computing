@@ -13,7 +13,7 @@ public class Behaviours {
                     "computerized_display_source"),
                 new TextDisplayBehaviour()
             ),
-            Registries.COMPUTERIZED_DISPLAY_SOURCE_TILE.get().delegate
+            Registries.COMPUTERIZED_DISPLAY_SOURCE_TILE.get()
         );
         AllDisplayBehaviours.assignTile(
             AllDisplayBehaviours.register(
@@ -21,7 +21,7 @@ public class Behaviours {
                     "computerized_display_target"),
                 new TextPassBehaviour()
             ),
-            Registries.COMPUTERIZED_DISPLAY_TARGET_TILE.get().delegate
+            Registries.COMPUTERIZED_DISPLAY_TARGET_TILE.get()
         );
     }
 }

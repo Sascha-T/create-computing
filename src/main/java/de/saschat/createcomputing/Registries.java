@@ -1,7 +1,7 @@
 package de.saschat.createcomputing;
 
 import com.simibubi.create.content.logistics.trains.management.edgePoint.TrackTargetingBlockItem;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullBiFunction;
+import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import de.saschat.createcomputing.blocks.ComputerizedDisplaySourceBlock;
 import de.saschat.createcomputing.blocks.ComputerizedDisplayTargetBlock;
 import de.saschat.createcomputing.blocks.ComputerizedRedstoneLinkBlock;
@@ -21,12 +21,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -37,7 +37,7 @@ import java.util.function.Supplier;
 public class Registries {
     public static DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, CreateComputingMod.MOD_ID);
     public static DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, CreateComputingMod.MOD_ID);
-    public static DeferredRegister<BlockEntityType<?>> TILE_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, CreateComputingMod.MOD_ID);
+    public static DeferredRegister<BlockEntityType<?>> TILE_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, CreateComputingMod.MOD_ID);
 
     public static RegistryObject<Block> registerBlock(String name, Supplier<Block> blockSupplier) {
         CreateComputingMod.LOGGER.info("Queuing block: " + name);
