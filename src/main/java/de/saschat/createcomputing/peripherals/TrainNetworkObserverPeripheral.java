@@ -26,12 +26,15 @@ import de.saschat.createcomputing.Utils;
 import de.saschat.createcomputing.api.SmartPeripheral;
 import de.saschat.createcomputing.tiles.TrainNetworkObserverTile;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -132,7 +135,7 @@ public class TrainNetworkObserverPeripheral extends SmartPeripheral {
                 return MethodResult.of(null);
             Carriage.DimensionalCarriageEntity car = carr.get();
             CarriageContraptionEntity ent = car.entity.get();
-            return MethodResult.of(ent.getX(), ent.getY(), ent.getZ(), ent.getLevel().dimension().getRegistryName().toString());
+            return MethodResult.of(ent.getX(), ent.getY(), ent.getZ(), ent.getLevel().dimension().registry().toString());
         });
         addMethod("getTrainSpeed", (iComputerAccess, iLuaContext, iArguments) -> {
             String b = iArguments.getString(0);
@@ -331,7 +334,7 @@ public class TrainNetworkObserverPeripheral extends SmartPeripheral {
         }
         ret.put("type", "item");
         ret.put("count", filter.getCount());
-        ret.put("id", filter.getItem().getRegistryName().toString());
+        ret.put("id", ForgeRegistries.ITEMS.getKey(filter.getItem()).toString());
         ret.put("nbt", blowNBT(filter.getTag()));
         return ret;
     }

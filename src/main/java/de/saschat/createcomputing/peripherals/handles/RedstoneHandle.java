@@ -7,6 +7,7 @@ import de.saschat.createcomputing.peripherals.ComputerizedRedstoneLinkPeripheral
 import de.saschat.createcomputing.tiles.ComputerizedRedstoneLinkTile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -72,7 +73,7 @@ public class RedstoneHandle {
     }
     @LuaFunction(mainThread = true)
     public final String[] getItems(IArguments arguments) throws LuaException {
-        return Arrays.stream(getHandle().items).map(a -> a.getRegistryName().toString()).collect(Collectors.toList()).toArray(new String[0]);
+        return Arrays.stream(getHandle().items).map(a -> ForgeRegistries.ITEMS.getKey(a).toString()).collect(Collectors.toList()).toArray(new String[0]);
     }
     @LuaFunction
     public final void close() {

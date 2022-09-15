@@ -14,12 +14,10 @@ import java.util.Map;
 
 public class Utils {
     public static Item getByName(ResourceLocation loc) {
-        var itemRegistryObject = ForgeRegistries.ITEMS.getEntries().stream().filter(a -> {
-            return a.getValue().getRegistryName().equals(loc);
-        }).findFirst().orElseGet(() -> null);
-        if (itemRegistryObject == null)
+        var itemRegistryObject = ForgeRegistries.ITEMS.getHolder(loc);
+        if (itemRegistryObject.isEmpty())
             return Items.AIR;
-        return itemRegistryObject.getValue();
+        return itemRegistryObject.get().get();
     }
 
     public interface Receiver<T> {
