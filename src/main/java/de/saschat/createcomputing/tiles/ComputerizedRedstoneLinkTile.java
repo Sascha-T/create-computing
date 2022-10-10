@@ -155,6 +155,7 @@ public class ComputerizedRedstoneLinkTile extends SmartTileEntity {
 
         public boolean registered = false;
 
+        public boolean dirty = false;
         public int sendSignal = 0;
         public int recvSignal = 0;
         ComputerizedRedstoneLinkTile parent;
@@ -218,13 +219,16 @@ public class ComputerizedRedstoneLinkTile extends SmartTileEntity {
         private void dirty() {
             if (parent.getLevel().isClientSide())
                 return;
+            if (dirty) return;
+            dirty = true;
             parent.tasks.add(this::_dirty);
-            parent.setChanged();
         }
 
         private void _dirty() {
+            dirty = false;
             transmit.notifySignalChange();
             receive.notifySignalChange();
+            parent.setChanged();
         }
 
         private void setSignal(int i) {
