@@ -38,14 +38,13 @@ public class RedstoneHandle {
         return linkPair;
     }
 
-    @LuaFunction(mainThread = true)
+    @LuaFunction(mainThread = false)
     public final void setSignal(IArguments arguments) throws LuaException {
         isOpen();
         int value = arguments.getInt(0);
-        System.out.println("sx: " + value);
         getHandle().provideSignal(value);
     }
-    @LuaFunction(mainThread = true)
+    @LuaFunction(mainThread = false)
     public final int getSignal(IArguments arguments) throws LuaException {
         isOpen();
         return getHandle().retrieveSignal();
